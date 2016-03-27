@@ -16,13 +16,23 @@ Read about it online.
 """
 
 import os
+from flask.ext.login import LoginManager
 from sqlalchemy import *
+from datetime import datetime
+from User import User
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
+from flask import Flask,session, flash, url_for, abort
+from flask.ext.login import login_user , logout_user , current_user , login_required, UserMixin
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
-
+app.config.from_pyfile('app.cfg')
+login_manager = LoginManager()
+login_manager.init_app(app)
+@login_manager.user_loader
+def load_user(user_id):
+  return queryUser(user_id)
 
 #
 # The following uses the sqlite3 database test.db -- you can use this for debugging purposes
@@ -40,36 +50,28 @@ app = Flask(__name__, template_folder=tmpl_dir)
 DATABASEURI = "sqlite:///test.db"
 
 
-#
-# This line creates a database engine that knows how to connect to the URI above
-#
+
 engine = create_engine(DATABASEURI)
 
 
-#
-# START SQLITE SETUP CODE
-#
-# after these statements run, you should see a file test.db in your webserver/ directory
-# this is a sqlite database that you can query like psql typing in the shell command line:
-# 
-#     sqlite3 test.db
-#
-# The following sqlite3 commands may be useful:
-# 
-#     .tables               -- will list the tables in the database
-#     .schema <tablename>   -- print CREATE TABLE statement for table
-# 
-# The setup code should be deleted once you switch to using the Part 2 postgresql database
-#
 engine.execute("""DROP TABLE IF EXISTS test;""")
+engine.execute("""DROP TABLE IF EXISTS users;""")
+engine.execute("""CREATE TABLE IF NOT EXISTS users (
+  user_id Integer primary key autoincrement,
+  username text unique,
+  password text,
+  email text unique,
+  active text,
+  registered_on text
+);""")
 engine.execute("""CREATE TABLE IF NOT EXISTS test (
   id serial,
   name text
 );""")
-engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
-#
-# END SQLITE SETUP CODE
-#
+engine.execute("""INSERT INTO test(name) VALUES ('grace hopper');""")
+engine.execute("""INSERT INTO test(name) VALUES ('ada lovelace');""")
+engine.execute("""INSERT INTO test(name) VALUES ('alan turing');""")
+
 
 
 
@@ -84,6 +86,7 @@ def before_request():
   """
   try:
     g.conn = engine.connect()
+    g.user = current_user
   except:
     print "uh oh, problem connecting to database"
     import traceback; traceback.print_exc()
@@ -100,105 +103,83 @@ def teardown_request(exception):
   except Exception as e:
     pass
 
-
-#
-# @app.route is a decorator around index() that means:
-#   run index() whenever the user tries to access the "/" path using a GET request
-#
-# If you wanted the user to go to e.g., localhost:8111/foobar/ with POST or GET then you could use
-#
-#       @app.route("/foobar/", methods=["POST", "GET"])
-#
-# PROTIP: (the trailing / in the path is important)
-# 
-# see for routing: http://flask.pocoo.org/docs/0.10/quickstart/#routing
-# see for decorators: http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
-#
 @app.route('/')
+@login_required
 def index():
-  """
-  request is a special object that Flask provides to access web request information:
-
-  request.method:   "GET" or "POST"
-  request.form:     if the browser submitted a form, this contains the data in the form
-  request.args:     dictionary of URL arguments e.g., {a:1, b:2} for http://localhost?a=1&b=2
-
-  See its API: http://flask.pocoo.org/docs/0.10/api/#incoming-request-data
-  """
-
-  # DEBUG: this is debugging code to see what request looks like
   print request.args
-
-
-  #
-  # example of a database query
-  #
   cursor = g.conn.execute("SELECT name FROM test")
   names = []
   for result in cursor:
-    names.append(result['name'])  # can also be accessed using result[0]
+    names.append(result['name']) 
   cursor.close()
-
-  #
-  # Flask uses Jinja templates, which is an extension to HTML where you can
-  # pass data to a template and dynamically generate HTML based on the data
-  # (you can think of it as simple PHP)
-  # documentation: https://realpython.com/blog/python/primer-on-jinja-templating/
-  #
-  # You can see an example template in templates/index.html
-  #
-  # context are the variables that are passed to the template.
-  # for example, "data" key in the context variable defined below will be 
-  # accessible as a variable in index.html:
-  #
-  #     # will print: [u'grace hopper', u'alan turing', u'ada lovelace']
-  #     <div>{{data}}</div>
-  #     
-  #     # creates a <div> tag for each element in data
-  #     # will print: 
-  #     #
-  #     #   <div>grace hopper</div>
-  #     #   <div>alan turing</div>
-  #     #   <div>ada lovelace</div>
-  #     #
-  #     {% for n in data %}
-  #     <div>{{n}}</div>
-  #     {% endfor %}
-  #
   context = dict(data = names)
-
-
-  #
-  # render_template looks in the templates/ folder for files.
-  # for example, the below file reads template/index.html
-  #
   return render_template("index.html", **context)
-
-#
-# This is an example of a different path.  You can see it at
-# 
-#     localhost:8111/another
-#
-# notice that the functio name is another() rather than index()
-# the functions for each app.route needs to have different names
-#
-@app.route('/another')
-def another():
-  return render_template("anotherfile.html")
 
 
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
+@login_required
 def add():
   name = request.form['name']
   g.conn.execute('INSERT INTO test VALUES (NULL, ?)', name)
   return redirect('/')
 
 
-@app.route('/login')
+@app.route('/login',methods=['GET','POST'])
 def login():
-    abort(401)
-    this_is_never_executed()
+  if request.method == 'GET':
+    return render_template('login.html')
+  
+  username = request.form['username']
+  password = request.form['password']
+  registered_user = query(username=username,password=password)
+  if registered_user is None:
+    flash('Username or Password is invalid' , 'error')
+    return redirect(url_for('login'))
+  login_user(registered_user)
+  flash('Logged in successfully')
+  print 'Logged in successfully'
+  return redirect(request.args.get('next') or url_for('index'))
+
+@app.route('/register' , methods=['GET','POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+
+    create(request.form['username'] , request.form['password'],request.form['email'])
+    # add user to database
+    flash('User successfully registered')
+    return redirect(url_for('login'))
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index')) 
+
+
+def query(username,password):
+    query = text("SELECT * FROM users WHERE username = :uid and password = :pwd")
+    result = g.conn.execute(query,uid=username,pwd=password)
+    row = result.fetchone()
+    result.close()
+    if row is None:
+      return row
+    user = User(row['user_id'],row['username'],row['password'],row['email'],True,row['registered_on'])
+    return user
+
+def queryUser(user_id):
+    query = text("SELECT * FROM users WHERE user_id = :uid")
+    result = g.conn.execute(query,uid=user_id)
+    row = result.fetchone()
+    result.close()
+    if row is None:
+      return row
+    user = User(row['username'],row['password'],row['email'],True,row['registered_on'])
+    return user
+
+def create(username ,password , email, active=True,registered_on=datetime.utcnow()):
+    query = text("INSERT INTO users (username, password, email, active, registered_on) values (:uname, :pwd, :email_id, :is_active, :register_time) ")
+    g.conn.execute(query,uname=username,pwd=password,email_id=email, is_active=str(active),register_time=str(registered_on))
 
 
 if __name__ == "__main__":
@@ -224,7 +205,7 @@ if __name__ == "__main__":
 
     HOST, PORT = host, port
     print "running on %s:%d" % (HOST, PORT)
-    app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
+    app.run(host=HOST, port=PORT, debug=true, threaded=threaded)
 
 
   run()
