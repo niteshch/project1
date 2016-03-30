@@ -1,5 +1,10 @@
 {% extends "layout.html" %}
 {% block body %}
-  <h1>Muse Connect Admin Home</h1>
-  <h1 class="span6"><a href="{{ url_for('getArtist') }}">Manage Artist</a></h1><br>
+  <h1>MuseConnect Admin Home</h1>
+  <ul>
+  	<li class="span6"><a href="{{ url_for('artist_api.getArtist') }}">Manage Artist</a></li>
+  	<li class="span6"><a href="{{ url_for('band_api.getBand') }}">Manage Band</a></li>
+  	<li class="span6"><a href="{{ url_for('enthusiast_api.getEnthusiast') }}">Manage Enthusiast</a></li>
+  	<li class="span6"><a href="{{ url_for('event_api.getEvent') }}">Manage Events</a></li>
+  </ul>
 {% endblock %}

@@ -27,14 +27,23 @@ from flask import Flask, request, render_template, g, redirect, Response
 from flask import Flask,session, flash, url_for, abort
 from flask.ext.login import login_user , logout_user , current_user , login_required, UserMixin
 from artist import artist_api
+from band import band_api
+from enthusiast import enthusiast_api
+from event import event_api
 
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
-app.register_blueprint(artist_api, url_prefix='/artist')
+
 app.config.from_pyfile('app.cfg')
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+app.register_blueprint(artist_api, url_prefix='/artist')
+app.register_blueprint(band_api, url_prefix='/band')
+app.register_blueprint(enthusiast_api, url_prefix='/enthusiast')
+app.register_blueprint(event_api, url_prefix='/event')
+
 @login_manager.user_loader
 def load_user(user_id):
   return queryUser(user_id)

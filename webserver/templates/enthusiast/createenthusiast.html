@@ -1,69 +1,61 @@
 {% extends "layout.html" %}
 {% block body %}
-<script src="/static/js/artist.js"></script>
-{% set user = data %}
-<h2>Update Artist</h2>
-<form id="formEditArtist" name="editartist" method="POST"
-	action="{{ url_for('artist_api.updateArtist',username=user.username) }}" class="form-horizontal">
+<script src="/static/js/enthusiast.js"></script>
+<h2>Create Enthusiast</h2>
+<form id="formAddEnthusiast" name="addenthusiast" method="POST"
+	action="{{ url_for('enthusiast_api.createEnthusiast') }}" class="form-horizontal">
 	<div class="form-group">
 		<label for="username" class="col-sm-2 control-label">Username:</label>
 		<div class="col-sm-10">
 			<input id="username" type="text" placeholder="Username" name="username"
-				class="form-control" value="{{user.username}}" readonly>
+				class="form-control">
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="email" class="col-sm-2 control-label">Email:</label>
 		<div class="col-sm-10">
 			<input id="email" type="text" placeholder="Email"
-				name="email" class="form-control" value="{{user.email}}">
+				name="email" class="form-control">
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="address" class="col-sm-2 control-label">Address:</label>
 		<div class="col-sm-10">
 			<input id="address" type="text" placeholder="Address"
-				name="address" class="form-control" value="{{user.address}}">
+				name="address" class="form-control">
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="fname" class="col-sm-2 control-label">First Name:</label>
 		<div class="col-sm-10">
 			<input id="fname" type="text" placeholder="First Name"
-				name="fname" class="form-control" value="{{user.first_name}}">
+				name="fname" class="form-control">
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="mname" class="col-sm-2 control-label">Middle Name:</label>
 		<div class="col-sm-10">
 			<input id="mname" type="text" placeholder="Middle Name"
-				name="mname" class="form-control" value="{{user.middle_name}}">
+				name="mname" class="form-control">
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="lname" class="col-sm-2 control-label">Last Name:</label>
 		<div class="col-sm-10">
 			<input id="lname" type="text" placeholder="Last Name"
-				name="lname" class="form-control" value="{{user.last_name}}">
+				name="lname" class="form-control">
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="experience" class="col-sm-2 control-label">Experience:</label>
+		<label for="interests" class="col-sm-2 control-label">Interests:</label>
 		<div class="col-sm-10">
-			<input id="experience" type="text" placeholder="Experience"
-				name="experience" class="form-control" value="{{user.experience}}">
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="specialization" class="col-sm-2 control-label">Specialization:</label>
-		<div class="col-sm-10">
-			<input id="specialization" type="text" placeholder="Specialization"
-				name="specialization" class="form-control" value="{{user.specialization}}">
+			<input id="interests" type="text" placeholder="Interests"
+				name="interests" class="form-control">
 		</div>
 	</div>
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
-			<button id="btnSubmit" type="submit" class="form-control">Update Artist</button>
+			<button id="btnSubmit" type="submit" class="form-control">Create Enthusiast</button>
 		</div>
 	</div>
 </form>

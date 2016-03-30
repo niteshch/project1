@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="/static/js/band.js"></script>
+<h2>Create Band</h2>
+<form id="formAddBand" name="addband" method="POST"
+	action="{{ url_for('band_api.createBand') }}" class="form-horizontal">
+	<div class="form-group">
+		<label for="band_id" class="col-sm-2 control-label">Band ID:</label>
+		<div class="col-sm-10">
+			<input id="band_id" type="text" placeholder="Band ID" name="band_id"
+				class="form-control">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="band_name" class="col-sm-2 control-label">Band Name:</label>
+		<div class="col-sm-10">
+			<input id="band_name" type="text" placeholder="Band Name"
+				name="band_name" class="form-control">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="since" class="col-sm-2 control-label">Since:</label>
+		<div class="col-sm-10">
+			<input id="since" type="text" placeholder="Since"
+				name="since" class="form-control">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="specialization" class="col-sm-2 control-label">Specialization:</label>
+		<div class="col-sm-10">
+			<input id="specialization" type="text" placeholder="Specialization"
+				name="specialization" class="form-control">
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button id="btnSubmit" type="submit" class="form-control">Create Band</button>
+		</div>
+	</div>
+</form>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="/static/js/band.js"></script>
+<div id="wrapper">
+	<!-- Band INFO-->
+	<div id="bandInfo" class="span5 pull-right">
+		<h2>Band Info</h2>
+		<p>
+			<strong>Band ID:</strong> <span id="band_id"></span><br>
+			<strong>Band Name:</strong> <span id="band_name"></span><br>
+			<strong>Since:</strong> <span id="since"></span><br>
+			<strong>Specialization:</strong> <span id="specialization"></span><br>
+		</p>
+	</div>
+	<!-- /Band INFO-->
+	<!-- Band LIST-->
+	<h1 class="span6"><a href="{{ url_for('band_api.createBand') }}">Create Band</a></h1><br>
+	<h2 class="span6">Band List</h2>
+	<div id="bandList" class="span6">
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th>Band ID</th>
+					<th>Band Name</th>
+					<th>Edit?</th>
+					<th>Delete?</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<!-- /Band LIST-->
+</div>
+{% endblock %}

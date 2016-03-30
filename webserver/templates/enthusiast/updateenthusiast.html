@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block body %}
-<script src="/static/js/artist.js"></script>
+<script src="/static/js/enthusiast.js"></script>
 {% set user = data %}
-<h2>Update Artist</h2>
-<form id="formEditArtist" name="editartist" method="POST"
-	action="{{ url_for('artist_api.updateArtist',username=user.username) }}" class="form-horizontal">
+<h2>Update Enthusiast</h2>
+<form id="formEditEnthusiast" name="editenthusiast" method="POST"
+	action="{{ url_for('enthusiast_api.updateEnthusiast',username=user.username) }}" class="form-horizontal">
 	<div class="form-group">
 		<label for="username" class="col-sm-2 control-label">Username:</label>
 		<div class="col-sm-10">
@@ -48,22 +48,15 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="experience" class="col-sm-2 control-label">Experience:</label>
+		<label for="interests" class="col-sm-2 control-label">Interests:</label>
 		<div class="col-sm-10">
-			<input id="experience" type="text" placeholder="Experience"
-				name="experience" class="form-control" value="{{user.experience}}">
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="specialization" class="col-sm-2 control-label">Specialization:</label>
-		<div class="col-sm-10">
-			<input id="specialization" type="text" placeholder="Specialization"
-				name="specialization" class="form-control" value="{{user.specialization}}">
+			<input id="interests" type="text" placeholder="Interests"
+				name="interests" class="form-control" value="{{user.interests}}">
 		</div>
 	</div>
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
-			<button id="btnSubmit" type="submit" class="form-control">Update Artist</button>
+			<button id="btnSubmit" type="submit" class="form-control">Update Enthusiast</button>
 		</div>
 	</div>
 </form>

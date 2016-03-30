@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="/static/js/event.js"></script>
+<div id="wrapper">
+	<!-- Event INFO-->
+	<div id="eventInfo" class="span5 pull-right">
+		<h2>Event Info</h2>
+		<p>
+			<strong>Event ID:</strong> <span id="event_id"></span><br>
+			<strong>Start Time:</strong> <span id="start_time"></span><br>
+			<strong>End Time:</strong> <span id="end_time"></span><br>
+			<strong>Address:</strong> <span id="address"></span><br>
+			<strong>Event Type:</strong> <span id="event_type"></span><br>
+		</p>
+	</div>
+	<!-- /Event INFO-->
+	<!-- Event LIST-->
+	<h1 class="span6"><a href="{{ url_for('event_api.createEvent') }}">Create Event</a></h1><br>
+	<h2 class="span6">Event List</h2>
+	<div id="eventList" class="span6">
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th>Event ID</th>
+					<th>Event Type</th>
+					<th>Edit?</th>
+					<th>Delete?</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<!-- /Event LIST-->
+</div>
+{% endblock %}
