@@ -16,6 +16,8 @@ Read about it online.
 """
 
 import os
+import psycopg2
+import json
 from flask.ext.login import LoginManager
 from sqlalchemy import *
 from datetime import datetime
@@ -24,9 +26,12 @@ from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
 from flask import Flask,session, flash, url_for, abort
 from flask.ext.login import login_user , logout_user , current_user , login_required, UserMixin
+from artist import artist_api
+
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
+app.register_blueprint(artist_api, url_prefix='/artist')
 app.config.from_pyfile('app.cfg')
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -41,36 +46,36 @@ def load_user(user_id):
 #
 # XXX: The URI should be in the format of: 
 #
-#     postgresql://USER:PASSWORD@w4111db.eastus.cloudapp.azure.com/username
+#     postgresql://nitesch:$Heela79@w4111db.eastus.cloudapp.azure.com/nc2663
 #
 # For example, if you had username ewu2493, password foobar, then the following line would be:
 #
 #     DATABASEURI = "postgresql://ewu2493:foobar@w4111db.eastus.cloudapp.azure.com/ewu2493"
 #
-DATABASEURI = "sqlite:///test.db"
-
+#DATABASEURI = "sqlite:///test.db"
+DATABASEURI = "postgresql://postgres:@localhost:5432/museconnect"
 
 
 engine = create_engine(DATABASEURI)
 
 
-engine.execute("""DROP TABLE IF EXISTS test;""")
-engine.execute("""DROP TABLE IF EXISTS users;""")
+#engine.execute("""DROP TABLE IF EXISTS test;""")
+#engine.execute("""DROP TABLE IF EXISTS users;""")
 engine.execute("""CREATE TABLE IF NOT EXISTS users (
-  user_id Integer primary key autoincrement,
-  username text unique,
-  password text,
-  email text unique,
-  active text,
-  registered_on text
+  user_id serial primary key,
+  username varchar(10) unique,
+  password varchar(20),
+  email varchar(20) unique,
+  active boolean,
+  registered_on timestamp
 );""")
 engine.execute("""CREATE TABLE IF NOT EXISTS test (
   id serial,
   name text
 );""")
-engine.execute("""INSERT INTO test(name) VALUES ('grace hopper');""")
-engine.execute("""INSERT INTO test(name) VALUES ('ada lovelace');""")
-engine.execute("""INSERT INTO test(name) VALUES ('alan turing');""")
+# engine.execute("""INSERT INTO test(name) VALUES ('grace hopper');""")
+# engine.execute("""INSERT INTO test(name) VALUES ('ada lovelace');""")
+# engine.execute("""INSERT INTO test(name) VALUES ('alan turing');""")
 
 
 
@@ -104,16 +109,10 @@ def teardown_request(exception):
     pass
 
 @app.route('/')
-@login_required
 def index():
-  print request.args
-  cursor = g.conn.execute("SELECT name FROM test")
-  names = []
-  for result in cursor:
-    names.append(result['name']) 
-  cursor.close()
-  context = dict(data = names)
-  return render_template("index.html", **context)
+  if not g.user.is_active:
+    return redirect(url_for('login'))
+  return render_template("index.html")
 
 
 # Example of adding new data to the database
@@ -164,7 +163,7 @@ def query(username,password):
     result.close()
     if row is None:
       return row
-    user = User(row['user_id'],row['username'],row['password'],row['email'],True,row['registered_on'])
+    user = User(row['user_id'],row['username'],row['password'],row['email'],row['active'],row['registered_on'])
     return user
 
 def queryUser(user_id):
@@ -174,12 +173,12 @@ def queryUser(user_id):
     result.close()
     if row is None:
       return row
-    user = User(row['username'],row['password'],row['email'],True,row['registered_on'])
+    user = User(row['username'],row['password'],row['email'],row['active'],row['registered_on'])
     return user
 
 def create(username ,password , email, active=True,registered_on=datetime.utcnow()):
     query = text("INSERT INTO users (username, password, email, active, registered_on) values (:uname, :pwd, :email_id, :is_active, :register_time) ")
-    g.conn.execute(query,uname=username,pwd=password,email_id=email, is_active=str(active),register_time=str(registered_on))
+    g.conn.execute(query,uname=username,pwd=password,email_id=email, is_active=active,register_time=registered_on)
 
 
 if __name__ == "__main__":

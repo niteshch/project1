@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="/static/js/artist.js"></script>
+{% set user = data %}
+<h2>Create Artist</h2>
+<form id="formEditArtist" name="editartist" method="POST"
+	action="{{ url_for('artist_api.updateArtist',username=user.username) }}" class="form-horizontal">
+	<div class="form-group">
+		<label for="username" class="col-sm-2 control-label">Username:</label>
+		<div class="col-sm-10">
+			<input id="username" type="text" placeholder="Username" name="username"
+				class="form-control" value="{{user.username}}" readonly>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="email" class="col-sm-2 control-label">Email:</label>
+		<div class="col-sm-10">
+			<input id="email" type="text" placeholder="Email"
+				name="email" class="form-control" value="{{user.email}}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="address" class="col-sm-2 control-label">Address:</label>
+		<div class="col-sm-10">
+			<input id="address" type="text" placeholder="Address"
+				name="address" class="form-control" value="{{user.address}}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="fname" class="col-sm-2 control-label">First Name:</label>
+		<div class="col-sm-10">
+			<input id="fname" type="text" placeholder="First Name"
+				name="fname" class="form-control" value="{{user.first_name}}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="mname" class="col-sm-2 control-label">Middle Name:</label>
+		<div class="col-sm-10">
+			<input id="mname" type="text" placeholder="Middle Name"
+				name="mname" class="form-control" value="{{user.middle_name}}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="lname" class="col-sm-2 control-label">Last Name:</label>
+		<div class="col-sm-10">
+			<input id="lname" type="text" placeholder="Last Name"
+				name="lname" class="form-control" value="{{user.last_name}}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="experience" class="col-sm-2 control-label">Experience:</label>
+		<div class="col-sm-10">
+			<input id="experience" type="text" placeholder="Experience"
+				name="experience" class="form-control" value="{{user.experience}}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="specialization" class="col-sm-2 control-label">Specialization:</label>
+		<div class="col-sm-10">
+			<input id="specialization" type="text" placeholder="Specialization"
+				name="specialization" class="form-control" value="{{user.specialization}}">
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button id="btnSubmit" type="submit" class="form-control">Update Artist</button>
+		</div>
+	</div>
+</form>
+{% endblock %}

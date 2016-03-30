@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="/static/js/artist.js"></script>
+<div id="wrapper">
+	<!-- Artist INFO-->
+	<div id="artistInfo" class="span5 pull-right">
+		<h2>Artist Info</h2>
+		<p>
+			<strong>Username:</strong> <span id="username"></span><br>
+			<strong>Email:</strong> <span id="email"></span><br>
+			<strong>Address:</strong> <span id="address"></span><br>
+			<strong>First Name:</strong> <span id="fname"></span><br>
+			<strong>Middle Name:</strong> <span id="mname"></span><br>
+			<strong>Last Name:</strong> <span id="lname"></span><br>
+			<strong>Experience:</strong> <span id="experience"></span><br>
+			<strong>Specialization:</strong> <span id="specialization"></span><br>
+		</p>
+	</div>
+	<!-- /Artist INFO-->
+	<!-- Artist LIST-->
+	<h1 class="span6"><a href="{{ url_for('artist_api.createArtist') }}">Create Artist</a></h1><br>
+	<h2 class="span6">Artist List</h2>
+	<div id="artistList" class="span6">
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th>Username</th>
+					<th>Name</th>
+					<th>Edit?</th>
+					<th>Delete?</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<!-- /Artist LIST-->
+</div>
+{% endblock %}
