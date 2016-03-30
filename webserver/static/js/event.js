@@ -52,7 +52,6 @@ function showEventInfo(event) {
 
     // Retrieve uni from link rel attribute
     var event_id = $(this).attr('rel');
-    console.log(typeof event_id)
 
     // Get Index of object based on id value
     var arrayPosition = eventListData.map(function(arrayItem) { return arrayItem.event_id.toString(); }).indexOf(event_id);

@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="/static/js/hires.js"></script>
+<div id="wrapper">
+	<!-- Hires INFO-->
+	<div id="hiresInfo" class="span5 pull-right">
+		<h2>Hires Info</h2>
+		<p>
+			<strong>Hires ID:</strong> <span id="enth_user"></span><br>
+			<strong>Hires Name:</strong> <span id="artst_user"></span><br>
+			<strong>Since:</strong> <span id="event_id"></span><br>
+			<strong>Specialization:</strong> <span id="status"></span><br>
+			<strong>Specialization:</strong> <span id="rating"></span><br>
+		</p>
+	</div>
+	<!-- /Hires INFO-->
+	<!-- Hires LIST-->
+	<h1 class="span6"><a href="{{ url_for('hires_api.createHires') }}">Create Hires</a></h1><br>
+	<h2 class="span6">Hires List</h2>
+	<div id="hiresList" class="span6">
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th>Hires ID</th>
+					<th>Artist Hired</th>
+					<th>Edit?</th>
+					<th>Delete?</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<!-- /Hires LIST-->
+</div>
+{% endblock %}

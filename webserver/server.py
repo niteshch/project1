@@ -30,6 +30,8 @@ from artist import artist_api
 from band import band_api
 from enthusiast import enthusiast_api
 from event import event_api
+from instrument import instrument_api
+from hires import hires_api
 
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
@@ -43,6 +45,9 @@ app.register_blueprint(artist_api, url_prefix='/artist')
 app.register_blueprint(band_api, url_prefix='/band')
 app.register_blueprint(enthusiast_api, url_prefix='/enthusiast')
 app.register_blueprint(event_api, url_prefix='/event')
+app.register_blueprint(instrument_api, url_prefix='/instrument')
+app.register_blueprint(hires_api, url_prefix='/hires')
+
 
 @login_manager.user_loader
 def load_user(user_id):

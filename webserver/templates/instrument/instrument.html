@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="/static/js/instrument.js"></script>
+<div id="wrapper">
+	<!-- Instrument INFO-->
+	<div id="instrumentInfo" class="span5 pull-right">
+		<h2>Instrument Info</h2>
+		<p>
+			<strong>Instrument ID:</strong> <span id="instr_id"></span><br>
+			<strong>Condition:</strong> <span id="condition"></span><br>
+			<strong>Instrument Type:</strong> <span id="instr_type"></span><br>
+			<strong>Buyer Name:</strong> <span id="buyer_name"></span><br>
+			<strong>Seller Name:</strong> <span id="seller_name"></span><br>
+			<strong>Cost:</strong> <span id="cost"></span><br>
+			<strong>Status:</strong> <span id="status"></span><br>
+		</p>
+	</div>
+	<!-- /Instrument INFO-->
+	<!-- Instrument LIST-->
+	<h1 class="span6"><a href="{{ url_for('instrument_api.createInstrument') }}">Create Instrument</a></h1><br>
+	<h2 class="span6">Instrument List</h2>
+	<div id="instrumentList" class="span6">
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th>Instrument ID</th>
+					<th>Instrument Type</th>
+					<th>Edit?</th>
+					<th>Delete?</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<!-- /Instrument LIST-->
+</div>
+{% endblock %}
