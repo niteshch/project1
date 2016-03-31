@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="/static/js/artistperf.js"></script>
+<div id="wrapper">
+	<!-- Artistperf INFO-->
+	<div id="artistperfInfo" class="span5 pull-right">
+		<h2>Artist Performance Info</h2>
+		<p>
+			<strong>Artist ID:</strong> <span id="artst_user"></span><br>
+			<strong>Event ID:</strong> <span id="event_id"></span><br>
+		</p>
+	</div>
+	<!-- /Artistperf INFO-->
+	<!-- Artistperf LIST-->
+	<h1 class="span6"><a href="{{ url_for('artistperf_api.createArtistperf') }}">Create Artist Performance Entries</a></h1><br>
+	<h2 class="span6">Artist Performance List</h2>
+	<div id="artistperfList" class="span6">
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th>Artist Username</th>
+					<th>Event ID</th>
+					<th>Delete?</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<!-- /Artistperf LIST-->
+</div>
+{% endblock %}

@@ -7,5 +7,12 @@
   	<li class="span6"><a href="{{ url_for('enthusiast_api.getEnthusiast') }}">Manage Enthusiast</a></li>
   	<li class="span6"><a href="{{ url_for('event_api.getEvent') }}">Manage Events</a></li>
   	<li class="span6"><a href="{{ url_for('instrument_api.getInstrument') }}">Manage Instrument Sales</a></li>
+  	<li class="span6"><a href="{{ url_for('hires_api.getHires') }}">Manage Artist Hiring</a></li>
+    <li class="span6"><a href="{{ url_for('tutors_api.getTutors') }}">Manage Tutor Hiring</a></li>
+    <li class="span6"><a href="{{ url_for('bandmembers_api.getBandmembers') }}">Manage Band Membership</a></li>
+  	<li class="span6"><a href="{{ url_for('artistperf_api.getArtistperf') }}">Manage Artist Performance</a></li>
+    <li class="span6"><a href="{{ url_for('bandperf_api.getBandperf') }}">Manage Band Performance</a></li>
+    <li class="span6"><a href="{{ url_for('getFilteredTutor') }}">Tutor Dashboard</a></li>
+    <li class="span6"><a href="{{ url_for('getFilteredKeyboardArtist') }}">Keyboard Artist Dashboard</a></li>
   </ul>
 {% endblock %}

@@ -1,27 +1,27 @@
 {% extends "layout.html" %}
 {% block body %}
-<script src="/static/js/hires.js"></script>
+<script src="/static/js/tutors.js"></script>
 <div id="wrapper">
-	<!-- Hires INFO-->
-	<div id="hiresInfo" class="span5 pull-right">
-		<h2>Hires Info</h2>
+	<!-- Tutors INFO-->
+	<div id="tutorsInfo" class="span5 pull-right">
+		<h2>Tutors Info</h2>
 		<p>
 			<strong>Enthusiast:</strong> <span id="enth_user"></span><br>
 			<strong>Artist:</strong> <span id="artst_user"></span><br>
-			<strong>Event ID:</strong> <span id="event_id"></span><br>
+			<strong>Salary:</strong> <span id="salary"></span><br>
 			<strong>Status:</strong> <span id="status"></span><br>
 			<strong>Rating:</strong> <span id="rating"></span><br>
 		</p>
 	</div>
-	<!-- /Hires INFO-->
-	<!-- Hires LIST-->
-	<h1 class="span6"><a href="{{ url_for('hires_api.createHires') }}">Create Hires</a></h1><br>
-	<h2 class="span6">Hires List</h2>
-	<div id="hiresList" class="span6">
+	<!-- /Tutors INFO-->
+	<!-- Tutors LIST-->
+	<h1 class="span6"><a href="{{ url_for('tutors_api.createTutors') }}">Create Tutors</a></h1><br>
+	<h2 class="span6">Tutors List</h2>
+	<div id="tutorsList" class="span6">
 		<table class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<th>Hires ID</th>
+					<th>Tutors ID</th>
 					<th>Artist Hired</th>
 					<th>Edit?</th>
 					<th>Delete?</th>
@@ -30,6 +30,6 @@
 			<tbody></tbody>
 		</table>
 	</div>
-	<!-- /Hires LIST-->
+	<!-- /Tutors LIST-->
 </div>
 {% endblock %}

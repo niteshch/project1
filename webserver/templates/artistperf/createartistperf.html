@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="/static/js/artistperf.js"></script>
+<h2>Create Artist Performance</h2>
+<form id="formAddArtistperf" name="addartistperf" method="POST"
+	action="{{ url_for('artistperf_api.createArtistperf') }}" class="form-horizontal">
+	<div class="form-group">
+		<label for="artst_user" class="col-sm-2 control-label">Artist:</label>
+		<div class="col-sm-10">
+			<input id="artst_user" type="text" placeholder="Artist"
+				name="artst_user" class="form-control">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="event_id" class="col-sm-2 control-label">Event ID:</label>
+		<div class="col-sm-10">
+			<input id="event_id" type="text" placeholder="Event ID"
+				name="event_id" class="form-control">
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button id="btnSubmit" type="submit" class="form-control">Create Artist Performance</button>
+		</div>
+	</div>
+</form>
+{% endblock %}

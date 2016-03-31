@@ -32,6 +32,10 @@ from enthusiast import enthusiast_api
 from event import event_api
 from instrument import instrument_api
 from hires import hires_api
+from tutors import tutors_api
+from bandmembers import bandmembers_api
+from artistperf import artistperf_api
+from bandperf import bandperf_api
 
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
@@ -47,6 +51,10 @@ app.register_blueprint(enthusiast_api, url_prefix='/enthusiast')
 app.register_blueprint(event_api, url_prefix='/event')
 app.register_blueprint(instrument_api, url_prefix='/instrument')
 app.register_blueprint(hires_api, url_prefix='/hires')
+app.register_blueprint(tutors_api, url_prefix='/tutors')
+app.register_blueprint(bandmembers_api, url_prefix='/bandmembers')
+app.register_blueprint(artistperf_api, url_prefix='/artistperf')
+app.register_blueprint(bandperf_api, url_prefix='/bandperf')
 
 
 @login_manager.user_loader
@@ -169,6 +177,31 @@ def logout():
     logout_user()
     return redirect(url_for('index')) 
 
+@app.route('/getfilteredtutor')
+def getFilteredTutor():
+  if not g.user.is_active:
+    return redirect(url_for('login'))
+  cursor = g.conn.execute("SELECT A.email, A.address, A.first_name, A.last_name, A.middle_name, A.experience, A.specialization FROM tutors T, artist A, band_members B WHERE T.rating >= 5 AND A.username = B.artst_user AND A.username = T.artst_user AND B.status = TRUE AND A.specialization ~* 'guitar' AND T.salary <= 5000")
+  rowarray_list = []
+  for result in cursor:
+    t = dict(email=result['email'],address=result['address'],first_name=result['first_name'],last_name=result['last_name'],middle_name=result['middle_name'],experience=result['experience'],specialization=result['specialization'])
+    rowarray_list.append(t)
+  cursor.close()
+  context = dict(data = rowarray_list)
+  return render_template('tutordashboard.html',**context)
+
+@app.route('/getfilteredkeyboardartist')
+def getFilteredKeyboardArtist():
+  if not g.user.is_active:
+    return redirect(url_for('login'))
+  cursor = g.conn.execute("SELECT A.email, A.address, A.first_name, A.last_name, A.middle_name, A.experience, A.specialization FROM hires H, artist A, event E WHERE A.specialization ~*'keyboard' AND A.username = H.artst_user AND H.rating>=5  AND A.experience >= 5 AND A.address ~'CT' AND H.event_id = E.event_id")
+  rowarray_list = []
+  for result in cursor:
+    t = dict(email=result['email'],address=result['address'],first_name=result['first_name'],last_name=result['last_name'],middle_name=result['middle_name'],experience=result['experience'],specialization=result['specialization'])
+    rowarray_list.append(t)
+  cursor.close()
+  context = dict(data = rowarray_list)
+  return render_template('keyboardartistdashboard.html',**context)
 
 def query(username,password):
     query = text("SELECT * FROM users WHERE username = :uid and password = :pwd")

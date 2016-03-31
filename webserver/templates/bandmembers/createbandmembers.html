@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="/static/js/bandmembers.js"></script>
+<h2>Create Band Members</h2>
+<form id="formAddBandmembers" name="addbandmembers" method="POST"
+	action="{{ url_for('bandmembers_api.createBandmembers') }}" class="form-horizontal">
+	<div class="form-group">
+		<label for="artst_user" class="col-sm-2 control-label">Artist:</label>
+		<div class="col-sm-10">
+			<input id="artst_user" type="text" placeholder="Artist"
+				name="artst_user" class="form-control">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="band_id" class="col-sm-2 control-label">Band ID:</label>
+		<div class="col-sm-10">
+			<input id="band_id" type="text" placeholder="Band ID"
+				name="band_id" class="form-control">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="status" class="col-sm-2 control-label">Status:</label>
+		<div class="col-sm-10">
+			<input id="status" type="text" placeholder="Status"
+				name="status" class="form-control">
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button id="btnSubmit" type="submit" class="form-control">Create Band Members</button>
+		</div>
+	</div>
+</form>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="/static/js/bandperf.js"></script>
+<h2>Create Band Performance</h2>
+<form id="formAddBandperf" name="addbandperf" method="POST"
+	action="{{ url_for('bandperf_api.createBandperf') }}" class="form-horizontal">
+	<div class="form-group">
+		<label for="band_id" class="col-sm-2 control-label">Band ID:</label>
+		<div class="col-sm-10">
+			<input id="band_id" type="text" placeholder="Band ID"
+				name="band_id" class="form-control">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="event_id" class="col-sm-2 control-label">Event ID:</label>
+		<div class="col-sm-10">
+			<input id="event_id" type="text" placeholder="Event ID"
+				name="event_id" class="form-control">
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button id="btnSubmit" type="submit" class="form-control">Create Artist Performance</button>
+		</div>
+	</div>
+</form>
+{% endblock %}

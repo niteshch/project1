@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="/static/js/tutors.js"></script>
+{% set user = data %}
+{% set tutors_id = user.enth_user+", "+user.artst_user %}
+<h2>Update Tutors</h2>
+<form id="formEditTutors" name="edittutors" method="POST"
+	action="{{ url_for('tutors_api.updateTutors',tutors_id=tutors_id) }}" class="form-horizontal">
+	<div class="form-group">
+		<label for="enth_user" class="col-sm-2 control-label">Enthusiast:</label>
+		<div class="col-sm-10">
+			<input id="enth_user" type="text" placeholder="Enthusiast" name="enth_user"
+				class="form-control" value="{{user.enth_user}}" readonly>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="artst_user" class="col-sm-2 control-label">Artist:</label>
+		<div class="col-sm-10">
+			<input id="artst_user" type="text" placeholder="Artist"
+				name="artst_user" class="form-control" value="{{user.artst_user}}" readonly>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="salary" class="col-sm-2 control-label">Salary:</label>
+		<div class="col-sm-10">
+			<input id="salary" type="text" placeholder="Salary"
+				name="salary" class="form-control" value="{{user.salary}}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="status" class="col-sm-2 control-label">Status:</label>
+		<div class="col-sm-10">
+			<input id="status" type="text" placeholder="Status"
+				name="status" class="form-control" value="{{user.status}}">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="rating" class="col-sm-2 control-label">Rating:</label>
+		<div class="col-sm-10">
+			<input id="rating" type="text" placeholder="Rating"
+				name="rating" class="form-control" value="{{user.rating}}">
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button id="btnSubmit" type="submit" class="form-control">Update Tutors</button>
+		</div>
+	</div>
+</form>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block body %}
+<script src="/static/js/bandperf.js"></script>
+<div id="wrapper">
+	<!-- Bandperf INFO-->
+	<div id="bandperfInfo" class="span5 pull-right">
+		<h2>Band Performance Info</h2>
+		<p>
+			<strong>Band ID:</strong> <span id="band_id"></span><br>
+			<strong>Event ID:</strong> <span id="event_id"></span><br>
+		</p>
+	</div>
+	<!-- /Bandperf INFO-->
+	<!-- Bandperf LIST-->
+	<h1 class="span6"><a href="{{ url_for('bandperf_api.createBandperf') }}">Create Band Performance Entries</a></h1><br>
+	<h2 class="span6">Band Performance List</h2>
+	<div id="bandperfList" class="span6">
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th>Band Username</th>
+					<th>Event ID</th>
+					<th>Delete?</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	<!-- /Bandperf LIST-->
+</div>
+{% endblock %}
